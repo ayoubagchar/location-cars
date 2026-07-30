@@ -56,23 +56,24 @@ public class CarService {
         FuelType fuelType = null;
         if (fuel != null && !fuel.trim().isEmpty()) {
             try {
-                fuelType = FuelType.valueOf(fuel.toUpperCase());
+                fuelType = FuelType.valueOf(fuel.trim().toUpperCase());
             } catch (IllegalArgumentException ignored) {}
         }
 
         Transmission transEnum = null;
         if (transmission != null && !transmission.trim().isEmpty()) {
             try {
-                transEnum = Transmission.valueOf(transmission.toUpperCase());
+                transEnum = Transmission.valueOf(transmission.trim().toUpperCase());
             } catch (IllegalArgumentException ignored) {}
         }
-        if (search != null && search.isBlank()) {
-    search = null;
-}
 
-if (brand != null && brand.isBlank()) {
-    brand = null;
-}
+        if (search != null && search.isBlank()) {
+            search = null;
+        }
+
+        if (brand != null && brand.isBlank()) {
+            brand = null;
+        }
 
         Page<Car> carPage = carRepository.searchCars(
                 search, brand, fuelType, transEnum, seats, minPrice, maxPrice, available, pageable);

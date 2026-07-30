@@ -12,6 +12,7 @@ C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\entity\ContactRequest.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\dto\UserDto.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\controller\AdminStatsController.java
+C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\TestPassword.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\repository\ContactRequestRepository.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\dto\DashboardStatsDto.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\controller\HomeController.java
@@ -43,3 +44,4 @@ C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\service\FileStorageService.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\service\ContactRequestService.java
 C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\controller\AdminContactController.java
+C:\Users\Admin\Desktop\location des voiture\backend\src\main\java\com\carrental\specification\CarSpecification.java
