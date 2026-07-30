@@ -48,6 +48,7 @@ com\carrental\dto\CarImageDto.class
 com\carrental\dto\AuthResponse$AuthResponseBuilder.class
 com\carrental\dto\ContactRequestDto$ContactRequestDtoBuilder.class
 com\carrental\dto\ContactRequestDto.class
+com\carrental\controller\HomeController.class
 com\carrental\security\JwtUtils.class
 com\carrental\repository\ContactRequestRepository.class
 com\carrental\entity\AgencySettings$AgencySettingsBuilder.class
