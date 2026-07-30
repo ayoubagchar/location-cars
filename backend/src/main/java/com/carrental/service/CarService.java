@@ -66,6 +66,13 @@ public class CarService {
                 transEnum = Transmission.valueOf(transmission.toUpperCase());
             } catch (IllegalArgumentException ignored) {}
         }
+        if (search != null && search.isBlank()) {
+    search = null;
+}
+
+if (brand != null && brand.isBlank()) {
+    brand = null;
+}
 
         Page<Car> carPage = carRepository.searchCars(
                 search, brand, fuelType, transEnum, seats, minPrice, maxPrice, available, pageable);
