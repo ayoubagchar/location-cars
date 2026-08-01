@@ -506,23 +506,27 @@ export const AdminCars = () => {
                   {form.imageUrls.map((url, idx) => (
                     <div key={idx} className="flex items-center gap-2">
                       <input
-                        type="url"
-                        placeholder="https://..."
+                        type="text"
+                        placeholder="Ex: https://images.unsplash.com/... ou URL d'image"
                         value={url}
                         onChange={(e) => handleImageUrlChange(idx, e.target.value)}
                         className="flex-grow bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
                       />
-                      {url && (
+                      {url && url.trim() !== '' && (
                         <img
                           src={url}
                           alt="preview"
                           className="w-8 h-8 rounded-lg object-cover border border-white/10 shrink-0 bg-slate-950"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
                         />
                       )}
                       <button
                         type="button"
                         onClick={() => handleRemoveImageUrl(idx)}
                         className="text-red-400 p-1.5 hover:text-white"
+                        title="Supprimer l'URL"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -535,7 +539,7 @@ export const AdminCars = () => {
                   onClick={handleAddImageUrlInput}
                   className="text-xs text-amber-400 hover:text-amber-300 font-mono flex items-center gap-1"
                 >
-                  + Add another image URL input
+                  + Ajouter une autre URL d'image
                 </button>
               </div>
 
