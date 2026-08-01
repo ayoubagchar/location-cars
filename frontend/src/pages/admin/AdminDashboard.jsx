@@ -18,8 +18,16 @@ export const AdminDashboard = () => {
     setLoading(true);
     Promise.all([fetchAdminStats(), fetchAdminContactRequests({ page: 0, size: 5 })])
       .then(([statsRes, reqsRes]) => {
-        setStats(statsRes.data);
-        setRecentRequests(reqsRes.data.content || []);
+        if (statsRes && statsRes.data) {
+          setStats((prev) => ({ ...prev, ...statsRes.data }));
+        }
+        const reqData = reqsRes?.data;
+        const list = Array.isArray(reqData)
+          ? reqData
+          : reqData && Array.isArray(reqData.content)
+          ? reqData.content
+          : [];
+        setRecentRequests(list);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));

@@ -56,9 +56,16 @@ export const AdminCars = () => {
     setLoading(true);
     fetchAdminCars({ search, size: 50 })
       .then((res) => {
-        setCars(res.data.content || []);
+        const raw = res.data;
+        const carList = Array.isArray(raw)
+          ? raw
+          : raw && Array.isArray(raw.content)
+          ? raw.content
+          : [];
+        setCars(carList);
       })
       .catch((err) => {
+        setCars([]);
         setToast({ type: 'error', message: 'Failed to load fleet cars.' });
       })
       .finally(() => setLoading(false));

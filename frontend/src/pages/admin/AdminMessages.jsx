@@ -12,7 +12,13 @@ export const AdminMessages = () => {
     setLoading(true);
     fetchAdminContactRequests({ page: 0, size: 50 })
       .then((res) => {
-        setRequests(res.data.content || []);
+        const raw = res.data;
+        const list = Array.isArray(raw)
+          ? raw
+          : raw && Array.isArray(raw.content)
+          ? raw.content
+          : [];
+        setRequests(list);
       })
       .catch(() => {
         setToast({ type: 'error', message: 'Failed to load visitor contact requests.' });

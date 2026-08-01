@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate, useLocation, Outlet, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Car,
@@ -14,15 +14,20 @@ export const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem('admin_token');
-  const user = JSON.parse(localStorage.getItem('admin_user') || '{}');
 
-  useEffect(() => {
-    if (!token) {
-      navigate('/admin/login');
+  let user = {};
+  try {
+    const rawUser = localStorage.getItem('admin_user');
+    if (rawUser && rawUser !== 'undefined') {
+      user = JSON.parse(rawUser);
     }
-  }, [token, navigate]);
+  } catch (e) {
+    user = {};
+  }
 
-  if (!token) return null;
+  if (!token) {
+    return <Navigate to="/admin/login" replace />;
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('admin_token');
