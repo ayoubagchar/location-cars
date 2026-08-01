@@ -22,6 +22,7 @@ import {
   uploadMultipleCarImages,
 } from '../../services/api';
 import { Toast } from '../../components/Toast';
+import { getFullImageUrl } from '../../utils/imageUtils';
 
 export const AdminCars = () => {
   const [cars, setCars] = useState([]);
@@ -307,12 +308,13 @@ export const AdminCars = () => {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {cars.map((car) => {
-                  const imgUrl =
+                  const rawUrl =
                     car.images && car.images.length > 0
                       ? car.images[0].imageUrl
                       : car.imageUrls && car.imageUrls.length > 0
                       ? car.imageUrls[0]
-                      : 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=200&auto=format&fit=crop';
+                      : '';
+                  const imgUrl = getFullImageUrl(rawUrl);
 
                   return (
                     <tr key={car.id} className="hover:bg-white/5 transition-colors">
@@ -574,7 +576,7 @@ export const AdminCars = () => {
                       />
                       {url && url.trim() !== '' && (
                         <img
-                          src={url}
+                          src={getFullImageUrl(url)}
                           alt="preview"
                           className="w-8 h-8 rounded-lg object-cover border border-white/10 shrink-0 bg-slate-950"
                           onError={(e) => {

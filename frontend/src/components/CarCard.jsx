@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Fuel, Gauge, Users, Wind, ArrowUpRight, CheckCircle, XCircle } from 'lucide-react';
 
+import { getFullImageUrl } from '../utils/imageUtils';
+
 export const CarCard = ({ car }) => {
-  const primaryImage =
+  const rawImage =
     car.images && car.images.length > 0
       ? car.images.find((img) => img.isPrimary)?.imageUrl || car.images[0].imageUrl
       : car.imageUrls && car.imageUrls.length > 0
       ? car.imageUrls[0]
-      : 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop';
+      : '';
+
+  const primaryImage = getFullImageUrl(rawImage);
 
   return (
     <motion.div

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { fetchCarDetails, fetchAgencyInfo, submitContactRequest } from '../services/api';
 import { Toast } from '../components/Toast';
+import { getFullImageUrl } from '../utils/imageUtils';
 
 export const CarDetails = () => {
   const { id } = useParams();
@@ -119,10 +120,7 @@ export const CarDetails = () => {
           {/* Main Large Image */}
           <div className="relative aspect-[16/10] rounded-3xl overflow-hidden glass-card border border-white/10 shadow-2xl bg-slate-900">
             <img
-              src={
-                selectedImage ||
-                'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop'
-              }
+              src={getFullImageUrl(selectedImage)}
               alt={`${car.brand} ${car.model}`}
               className="w-full h-full object-cover object-center"
               onError={(e) => {
@@ -157,7 +155,7 @@ export const CarDetails = () => {
                       : 'border-transparent opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <img src={img.imageUrl} alt="Thumbnail" className="w-full h-full object-cover" />
+                  <img src={getFullImageUrl(img.imageUrl)} alt="Thumbnail" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
