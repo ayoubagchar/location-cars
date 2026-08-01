@@ -19,6 +19,7 @@ import {
   deleteCar,
   toggleCarAvailability,
   uploadCarImage,
+  uploadMultipleCarImages,
 } from '../../services/api';
 import { Toast } from '../../components/Toast';
 
@@ -32,6 +33,8 @@ export const AdminCars = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCarId, setEditingCarId] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+  const [showUrlInputs, setShowUrlInputs] = useState(false);
 
   // Form State
   const [form, setForm] = useState({
@@ -129,22 +132,79 @@ export const AdminCars = () => {
     }
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
+  const handleMultipleFilesUpload = (files) => {
+    if (!files || files.length === 0) return;
     setUploadingImage(true);
-    uploadCarImage(file)
+    uploadMultipleCarImages(files)
       .then((res) => {
-        const uploadedUrl = res.data.url;
-        const currentUrls = form.imageUrls.filter((u) => u.trim() !== '');
-        setForm({ ...form, imageUrls: [...currentUrls, uploadedUrl] });
-        setToast({ type: 'success', message: 'Image uploaded successfully!' });
+        const uploadedUrls = res.data.urls || [];
+        const currentUrls = form.imageUrls.filter((u) => u && u.trim() !== '');
+        setForm((prev) => ({ ...prev, imageUrls: [...currentUrls, ...uploadedUrls] }));
+        setToast({ type: 'success', message: `${uploadedUrls.length} photo(s) ajoutée(s) depuis votre dossier !` });
       })
       .catch(() => {
-        setToast({ type: 'error', message: 'Failed to upload image file.' });
+        const fileArray = Array.from(files);
+        let completed = 0;
+        const newUrls = [];
+        fileArray.forEach((f) => {
+          uploadCarImage(f)
+            .then((r) => {
+              if (r.data && r.data.url) {
+                newUrls.push(r.data.url);
+              }
+            })
+            .catch(() => {})
+            .finally(() => {
+              completed++;
+              if (completed === fileArray.length) {
+                if (newUrls.length > 0) {
+                  setForm((prev) => {
+                    const currentUrls = prev.imageUrls.filter((u) => u && u.trim() !== '');
+                    return { ...prev, imageUrls: [...currentUrls, ...newUrls] };
+                  });
+                  setToast({ type: 'success', message: `${newUrls.length} photo(s) ajoutée(s) !` });
+                } else {
+                  setToast({ type: 'error', message: "Échec du téléversement des photos." });
+                }
+                setUploadingImage(false);
+              }
+            });
+        });
       })
-      .finally(() => setUploadingImage(false));
+      .finally(() => {
+        setUploadingImage(false);
+      });
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleMultipleFilesUpload(e.dataTransfer.files);
+    }
+  };
+
+  const handleSetPrimaryImage = (index) => {
+    const validUrls = form.imageUrls.filter((u) => u && u.trim() !== '');
+    if (index > 0 && index < validUrls.length) {
+      const primary = validUrls.splice(index, 1)[0];
+      validUrls.unshift(primary);
+      setForm({ ...form, imageUrls: validUrls });
+      setToast({ type: 'success', message: 'Image définie comme photo principale !' });
+    }
   };
 
   const handleAddImageUrlInput = () => {

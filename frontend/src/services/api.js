@@ -72,4 +72,16 @@ export const uploadCarImage = (file) => {
   });
 };
 
+export const uploadMultipleCarImages = (files) => {
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    formData.append('files', files[i]);
+  }
+  return api.post('/upload/multiple', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
 export default api;
